@@ -3,6 +3,11 @@ import ButtonTable from '../../common/Button/Button';
 import Bill from '../../features/Bill/Bill';
 import PeopleAmount from '../../features/PeopleAmount/PeopleAmount';
 import Status from '../../features/Status/Status';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { getTableById, fetchTables } from '../../../redux/tablesRedux';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 const Table = () => {
   return (
     <div>

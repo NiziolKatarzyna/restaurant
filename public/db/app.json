@@ -9,7 +9,7 @@
       },
       {
         "id": 2,
-        "status": "free",
+        "status": "busy",
         "peopleAmount": "0",
         "maxPeopleAmount": "0",
         "bill": "0"
