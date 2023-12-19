@@ -5,7 +5,7 @@ import PageNotFound from './components/pages/PageNotFound/PageNotFound.js';
 import Container from 'react-bootstrap/Container';
 import Header from './components/views/Header/Header.js';
 import Footer from './components/views/Footer/Footer.js';
-import { fetchTables } from './Redux/tablesRedux.js';
+import { fetchTables } from './redux/tablesRedux';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 

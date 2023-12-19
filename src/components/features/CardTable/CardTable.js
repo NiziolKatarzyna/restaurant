@@ -1,6 +1,7 @@
 import styles from './CardTable.module.scss';
 import ButtonTable from '../../common/Button/Button';
 import { NavLink } from 'react-router-dom';
+import { getTableById } from '../../../redux/tablesRedux';
 const CardTable = () => {
   return (
     <li className={styles.list}>
