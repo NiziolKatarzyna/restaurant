@@ -1,0 +1,18 @@
+.list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid rgb(188, 175, 175);
+
+  .title {
+    width: 20%;
+  }
+  .status {
+    width: 60%;
+  }
+  .button {
+    text-align: end;
+  }
+}

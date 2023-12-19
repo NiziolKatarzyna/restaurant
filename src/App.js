@@ -2,15 +2,28 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './components/pages/Home/Home.js';
 import Table from './components/pages/Table/Table.js';
 import PageNotFound from './components/pages/PageNotFound/PageNotFound.js';
+import Container from 'react-bootstrap/Container';
+import Header from './components/views/Header/Header.js';
+import Footer from './components/views/Footer/Footer.js';
+import { fetchTables } from './Redux/tablesRedux.js';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => dispatch(fetchTables()), [dispatch]);
+
   return (
-    <main>
+    <Container>
+      <Header />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/table/:id' element={<Table />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
-    </main>
+      <Footer />
+    </Container>
   );
 }
 
