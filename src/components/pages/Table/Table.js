@@ -8,35 +8,49 @@ import { getTableById } from '../../../redux/tablesRedux';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateTableStatus } from '../../../redux/tablesRedux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { updatePeopleAmount } from '../../../redux/tablesRedux';
+
 const Table = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const tableId = parseInt(id);
-
   const table = useSelector((state) => getTableById(state, tableId));
-  const currentStatus = table ? table.status : '1';
-  console.log('aktualny status', currentStatus);
+
+  const [tempStatus, setTempStatus] = useState(table ? table.status : 'Free');
+
+  useEffect(() => {
+    if (table) {
+      setTempStatus(table.status);
+    }
+  }, [table]);
 
   const handleStatusChange = (newStatus) => {
-    dispatch(updateTableStatus(table.id, newStatus));
+    setTempStatus(newStatus);
   };
 
   const handleUpdate = () => {
-    dispatch(updateTableStatus(table.id, currentStatus));
+    dispatch(updateTableStatus(table.id, tempStatus));
   };
+
   if (!table) {
     return <div>Loading...</div>;
   }
+
+  // Warunkowe renderowanie komponentów PeopleAmount i Bill
+  const showPeopleAmount = true; // Zawsze pokazuj PeopleAmount
+  const showBill = tempStatus === 'Busy';
 
   return (
     <div>
       <h2 className={styles.title}>Table: {table.id}</h2>
       <ul className={styles.list}>
-        <Status status={currentStatus} onStatusChange={handleStatusChange} />
-        <PeopleAmount amount={table.peopleAmount} />
-        <Bill bill={table.bill} />
+        <Status status={tempStatus} onStatusChange={handleStatusChange} />
+        {showPeopleAmount && (
+          <PeopleAmount table={table} tempStatus={tempStatus} />
+        )}
+        {showBill && <Bill bill={table.bill} />}
         <ButtonTable as={NavLink} to={'/'} onClick={handleUpdate}>
           <span>Update</span>
         </ButtonTable>

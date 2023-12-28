@@ -4,4 +4,15 @@
   border-radius: 5px;
   width: 50px;
   line-height: 40px;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Dla przeglądarek Firefox */
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
 }

@@ -4,9 +4,8 @@ import Form from 'react-bootstrap/Form';
 const Status = ({ status, onStatusChange }) => {
   const handleStatusChange = (e) => {
     const newStatus = e.target.value;
-    const newStatusLabel = e.target.options[e.target.selectedIndex].text;
 
-    onStatusChange(newStatusLabel);
+    onStatusChange(newStatus);
   };
 
   return (
@@ -18,10 +17,10 @@ const Status = ({ status, onStatusChange }) => {
         value={status}
         onChange={handleStatusChange}
       >
-        <option value='1'>Free</option>
-        <option value='2'>Busy</option>
-        <option value='3'>Reserved</option>
-        <option value='4'>Cleaning</option>
+        <option value='Free'>Free</option>
+        <option value='Busy'>Busy</option>
+        <option value='Reserved'>Reserved</option>
+        <option value='Cleaning'>Cleaning</option>
       </Form.Select>
     </li>
   );

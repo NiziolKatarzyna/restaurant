@@ -1,12 +1,14 @@
 import styles from './TextInput.module.scss';
+import { useState } from 'react';
+import { useEffect } from 'react';
 const TextInput = (props) => {
+  const { value, onChange } = props;
   return (
     <input
       className={styles.input}
-      value={props.value}
-      onChange={props.onChange}
-      placeholder={props.placeholder}
-      type='text'
+      type='number'
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
     />
   );
 };
