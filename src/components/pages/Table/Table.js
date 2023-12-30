@@ -19,19 +19,32 @@ const Table = () => {
   const table = useSelector((state) => getTableById(state, tableId));
 
   const [tempStatus, setTempStatus] = useState(table ? table.status : 'Free');
+  const [tempPeopleAmount, setTempPeopleAmount] = useState('0');
+  const [tempMaxPeopleAmount, setTempMaxPeopleAmount] = useState('0');
 
   useEffect(() => {
     if (table) {
       setTempStatus(table.status);
+      setTempPeopleAmount(table.peopleAmount);
+      setTempMaxPeopleAmount(table.maxPeopleAmount);
     }
   }, [table]);
 
   const handleStatusChange = (newStatus) => {
     setTempStatus(newStatus);
+
+    if (newStatus !== 'Busy') {
+      setTempPeopleAmount('0');
+      setTempMaxPeopleAmount('0');
+    }
   };
 
   const handleUpdate = () => {
-    dispatch(updateTableStatus(table.id, tempStatus));
+    // Aktualizuj dane na serwerze
+    dispatch(
+      updatePeopleAmount(tableId, tempPeopleAmount, tempMaxPeopleAmount)
+    );
+    dispatch(updateTableStatus(tableId, tempStatus));
   };
 
   if (!table) {
@@ -48,7 +61,14 @@ const Table = () => {
       <ul className={styles.list}>
         <Status status={tempStatus} onStatusChange={handleStatusChange} />
         {showPeopleAmount && (
-          <PeopleAmount table={table} tempStatus={tempStatus} />
+          <PeopleAmount
+            table={table}
+            tempStatus={tempStatus}
+            tempPeopleAmount={tempPeopleAmount}
+            tempMaxPeopleAmount={tempMaxPeopleAmount}
+            setTempPeopleAmount={setTempPeopleAmount}
+            setTempMaxPeopleAmount={setTempMaxPeopleAmount}
+          />
         )}
         {showBill && <Bill bill={table.bill} />}
         <ButtonTable as={NavLink} to={'/'} onClick={handleUpdate}>

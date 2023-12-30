@@ -8,7 +8,7 @@ const TextInput = (props) => {
       className={styles.input}
       type='number'
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={onChange}
     />
   );
 };
