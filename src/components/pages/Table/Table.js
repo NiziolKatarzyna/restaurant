@@ -10,7 +10,10 @@ import { useDispatch } from 'react-redux';
 import { updateTableStatus } from '../../../redux/tablesRedux';
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { updatePeopleAmount } from '../../../redux/tablesRedux';
+import {
+  updatePeopleAmount,
+  updateBillAmount,
+} from '../../../redux/tablesRedux';
 
 const Table = () => {
   const dispatch = useDispatch();
@@ -21,12 +24,14 @@ const Table = () => {
   const [tempStatus, setTempStatus] = useState(table ? table.status : 'Free');
   const [tempPeopleAmount, setTempPeopleAmount] = useState('0');
   const [tempMaxPeopleAmount, setTempMaxPeopleAmount] = useState('0');
+  const [billAmount, setBillAmount] = useState(0);
 
   useEffect(() => {
     if (table) {
       setTempStatus(table.status);
       setTempPeopleAmount(table.peopleAmount);
       setTempMaxPeopleAmount(table.maxPeopleAmount);
+      setBillAmount(table.bill || 0);
     }
   }, [table]);
 
@@ -36,41 +41,38 @@ const Table = () => {
     if (newStatus !== 'Busy') {
       setTempPeopleAmount('0');
       setTempMaxPeopleAmount('0');
+      setBillAmount(0);
     }
   };
 
   const handleUpdate = () => {
-    // Aktualizuj dane na serwerze
+    dispatch(updateTableStatus(tableId, tempStatus));
     dispatch(
       updatePeopleAmount(tableId, tempPeopleAmount, tempMaxPeopleAmount)
     );
-    dispatch(updateTableStatus(tableId, tempStatus));
+    dispatch(updateBillAmount(tableId, billAmount));
   };
 
   if (!table) {
     return <div>Loading...</div>;
   }
 
-  // Warunkowe renderowanie komponentów PeopleAmount i Bill
-  const showPeopleAmount = true; // Zawsze pokazuj PeopleAmount
-  const showBill = tempStatus === 'Busy';
-
   return (
     <div>
       <h2 className={styles.title}>Table: {table.id}</h2>
       <ul className={styles.list}>
         <Status status={tempStatus} onStatusChange={handleStatusChange} />
-        {showPeopleAmount && (
-          <PeopleAmount
-            table={table}
-            tempStatus={tempStatus}
-            tempPeopleAmount={tempPeopleAmount}
-            tempMaxPeopleAmount={tempMaxPeopleAmount}
-            setTempPeopleAmount={setTempPeopleAmount}
-            setTempMaxPeopleAmount={setTempMaxPeopleAmount}
-          />
+        <PeopleAmount
+          table={table}
+          tempStatus={tempStatus}
+          tempPeopleAmount={tempPeopleAmount}
+          tempMaxPeopleAmount={tempMaxPeopleAmount}
+          setTempPeopleAmount={setTempPeopleAmount}
+          setTempMaxPeopleAmount={setTempMaxPeopleAmount}
+        />
+        {tempStatus === 'Busy' && (
+          <Bill billAmount={billAmount} setBillAmount={setBillAmount} />
         )}
-        {showBill && <Bill bill={table.bill} />}
         <ButtonTable as={NavLink} to={'/'} onClick={handleUpdate}>
           <span>Update</span>
         </ButtonTable>
