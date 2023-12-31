@@ -5,7 +5,7 @@ import PeopleAmount from '../../features/PeopleAmount/PeopleAmount';
 import Status from '../../features/Status/Status';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { getTableById } from '../../../redux/tablesRedux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateTableStatus } from '../../../redux/tablesRedux';
 import { useState, useEffect } from 'react';
@@ -17,6 +17,7 @@ import {
 
 const Table = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const tableId = parseInt(id);
   const table = useSelector((state) => getTableById(state, tableId));
@@ -27,13 +28,15 @@ const Table = () => {
   const [billAmount, setBillAmount] = useState(0);
 
   useEffect(() => {
-    if (table) {
+    if (!table) {
+      navigate('/');
+    } else {
       setTempStatus(table.status);
       setTempPeopleAmount(table.peopleAmount);
       setTempMaxPeopleAmount(table.maxPeopleAmount);
       setBillAmount(table.bill || 0);
     }
-  }, [table]);
+  }, [table, navigate]);
 
   const handleStatusChange = (newStatus) => {
     setTempStatus(newStatus);
